@@ -16,7 +16,7 @@ jobs:
         command: |
           cd /home/cloudpanel/htdocs/clean-dev.dev-laravel.co
           git pull
-          composer install
+          php8.1 /usr/local/bin/composer install
           echo "yes" | php8.1 artisan migrate
           php8.1 artisan config:cache
           php8.1 artisan view:cache

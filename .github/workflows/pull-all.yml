@@ -7,14 +7,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Run sshpass commands
-      uses:  invi5H/ssh-action@v1
+    - name: create-directory
+      uses: nekiro/ssh-job@main
       with:
-        SSH_HOST: ${{ secrets.SERVER_HOST }}
-        SSH_USER: ${{ secrets.SERVER_USER }}
-        SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SSH_PORT: ${{ secrets.SERVER_PORT }}
-    - run: cd /home/cloudpanel/htdocs/clean-dev.dev-laravel.co && git pull && composer install && php artisan migrate && php artisan config:cache && php artisan view:cache && php artisan route:cache
+        host: ${{ secrets.HOST }}
+        key: ${{ secrets.KEY }}
+        user: ${{ secrets.USER }}
+        command: |
+          ls
+    
+          # cd /home/cloudpanel/htdocs/clean-dev.dev-laravel.co
+        # git pull
+        # composer install
+        # echo "yes" | php8.1 artisan migrate
+        # php8.1 artisan config:cache
+        # php8.1 artisan view:cache
+        # php8.1 artisan route:cache
+        # php8.1 artisan config:cache
+
 
 
 

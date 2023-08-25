@@ -8,21 +8,24 @@ jobs:
 
     steps:
     - name: Run sshpass commands
-      uses: appleboy/ssh-action@v0.1.10
+      uses: MrSquaare/ssh-setup-action@v2
       with:
         host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USER }}
-        password: ${{ secrets.SERVER_PASS }}
-        port: ${{ secrets.SERVER_PORT }}
-        script: |
-          cd /home/cloudpanel/htdocs/clean-dev.dev-laravel.co
-          git pull
-          composer install
-          echo "yes" | php8.1 artisan migrate
-          php8.1 artisan config:cache
-          php8.1 artisan view:cache
-          php8.1 artisan route:cache
-          php8.1 artisan config:cache
+        private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        private-key-name: zivhsiao
+    - name: Clone repo
+      run:
+        cd /home/cloudpanel/htdocs/clean-dev.dev-laravel.co
+        git pull
+        composer install
+        echo "yes" | php8.1 artisan migrate
+        php8.1 artisan config:cache
+        php8.1 artisan view:cache
+        php8.1 artisan route:cache
+        php8.1 artisan config:cache
+
+
+
 
 
 

@@ -1,0 +1,19 @@
+.nav-item a {
+    text-decoration: none;
+    color: #333333;
+}
+
+a:link {
+    color: #333333;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #78d1e5;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.align-center {
+    text-align: center;
+}

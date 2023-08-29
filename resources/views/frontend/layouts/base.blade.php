@@ -125,6 +125,7 @@
         </footer>
     </div>
     <!-- Bootstrap 5.3.1 JS and Popper.js -->
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqFjcJ6pajs/rfdfs3SO+kDZCk5BdPtF+to8xM6B5z6W5" crossorigin="anonymous">
     </script>

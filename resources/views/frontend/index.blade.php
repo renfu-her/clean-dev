@@ -31,46 +31,31 @@
 
                     <div class="tab-content mt-3" id="searchTabsContent">
                         <div class="tab-pane fade show active" id="quickSearch" role="tabpanel">
-                            <form action="/search/quick" method="get">
-                                <select class="form-control mb-2" name="region">
-                                    <option value="">選擇區域</option>
-                                    <!-- 可以加入其他區域選項 -->
-                                </select>
-                                <select class="form-control mb-2" name="cleaning_type">
-                                    <option value="single">單人打掃</option>
-                                    <option value="duo">雙人打掃</option>
-                                </select>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="hasPet" name="has_pet">
-                                    <label class="form-check-label" for="hasPet">家中有寵物</label>
-                                </div>
-                                <button type="submit" class="btn btn-primary">搜尋</button>
-                            </form>
+                            <input type="text" id="region_quick" class="form-control mb-2">
+                            <select class="form-control mb-2" name="cleaning_type">
+                                <option value="single">單人打掃</option>
+                                <option value="duo">雙人打掃</option>
+                            </select>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="hasPet" name="has_pet">
+                                <label class="form-check-label" for="hasPet">家中有寵物</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">搜尋</button>
                         </div>
 
                         <div class="tab-pane fade" id="duoSearch" role="tabpanel">
-                            <form action="/search/duo" method="get">
-                                <select class="form-control mb-2" name="region">
-                                    <option value="">選擇區域</option>
-                                    <!-- 可以加入其他區域選項 -->
-                                </select>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" id="duoHasPet" name="has_pet">
-                                    <label class="form-check-label" for="duoHasPet">家中有寵物</label>
-                                </div>
-                                <button type="submit" class="btn btn-primary">搜尋</button>
-                            </form>
+                            <input type="text" id="region_duo" class="form-control">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="duoHasPet" name="has_pet">
+                                <label class="form-check-label" for="duoHasPet">家中有寵物</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">搜尋</button>
                         </div>
 
                         <div class="tab-pane fade" id="specificPersonSearch" role="tabpanel">
-                            <form action="/search/specific" method="get">
-                                <select class="form-control mb-2" name="region">
-                                    <option value="">選擇區域</option>
-                                    <!-- 可以加入其他區域選項 -->
-                                </select>
-                                <input type="text" class="form-control mb-2" name="person_name" placeholder="名稱">
-                                <button type="submit" class="btn btn-primary">搜尋</button>
-                            </form>
+                            <input type="text" id="region_person" class="form-control">
+                            <input type="text" class="form-control mb-2" name="person_name" placeholder="名稱">
+                            <button type="submit" class="btn btn-primary">搜尋</button>
                         </div>
                     </div>
                 </div>
@@ -79,10 +64,8 @@
     </div>
 @endsection
 
-@section('js')
-@endsection
-
 @section('css')
+    <link rel="stylesheet" href="{{ asset('css/cascader.css') }}">
     <style>
         .bg-image-container {
             background: url('{{ asset('images/white-room-1.jpg') }}') no-repeat center center;
@@ -108,4 +91,63 @@
             border-radius: 10px;
         }
     </style>
+@endsection
+
+@section('js')
+    <script src="{{ asset('js/cascader.js') }}"></script>
+    <script>
+        jQuery.ajaxSetup({
+            async: false
+        });
+
+        $(function() {
+            let data = [];
+            $.get('/api/searchApi', function(res) {
+                data = res
+            })
+
+
+            // parse data
+            data.forEach(function(item) {
+                item.label = item.name
+                item.value = item.indexcode
+                item.children = item.s
+                item.s.forEach(function(item2) {
+                    item2.label = item2.name
+                    item2.value = item2.indexcode
+                    if (item2.s && item2.s.length) {
+                        item2.children = item2.s
+                        item2.s.forEach(function(item3) {
+                            item3.label = item3.name
+                            item3.value = item3.indexcode
+                        })
+                    }
+                })
+            })
+
+            // initialize
+            $('#region_quick').zdCascader({
+                data: data,
+                container: '#region_quick',
+                onChange: function(value, label, datas) {
+                    console.log(value, label, datas);
+                }
+            });
+            $('#region_duo').zdCascader({
+                data: data,
+                container: '#region_duo',
+                onChange: function(value, label, datas) {
+                    console.log(value, label, datas);
+                }
+            });
+            $('#region_person').zdCascader({
+                data: data,
+                container: '#region_person',
+                onChange: function(value, label, datas) {
+                    console.log(value, label, datas);
+                }
+            });
+
+        })
+    </script>
 @endsection
